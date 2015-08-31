@@ -61,10 +61,10 @@ distance = (point1, point2) ->
 
 CommitsGraphMixin =
   getDefaultProps: ->
-    y_step: 20
+    y_step: 40
     x_step: 20
-    dotRadius: 3
-    lineWidth: 2
+    dotRadius: 10
+    lineWidth: 5
     selected: null
     mirror: false
     unstyled: false
