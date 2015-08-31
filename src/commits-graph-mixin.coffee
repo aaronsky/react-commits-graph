@@ -91,7 +91,7 @@ CommitsGraphMixin =
         smallestDistance = commitDistance
         closestCommit = commit
 
-    @props.onClick?(closestCommit.sha)
+    @props.onClick?(closestCommit)
 
   getGraphData: ->
     @graphData ||= generateGraphData(@props.commits)
@@ -189,7 +189,7 @@ CommitsGraphMixin =
       'data-sha': sha
       className: classes
 
-  renderCommit: (idx, [sha, dot, routes_data]) ->
+  renderCommit: (idx, [sha, dot, routes_data, commit]) ->
     [dot_offset, dot_branch] = dot
 
     # draw dot
@@ -205,7 +205,7 @@ CommitsGraphMixin =
     routeNodes = for route, index in routes_data
       @renderRoute(idx, route)
 
-    @renderedCommitsPositions.push {x, y, sha}
+    @renderedCommitsPositions.push {x, y, sha, commit}
 
     [commitNode, routeNodes]
 

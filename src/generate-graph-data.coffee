@@ -40,28 +40,28 @@ generateGraphData = (commits) ->
     routes = []
 
     if numParents is 1
-      if branches[commit.parents[0]]?
+      if branches[commit.parents[0].sha]?
         # create branch
         for b, i in reserve[offset + 1..]
           routes.push [i + offset + 1, i + offset + 1 - 1, b]
         for b, i in reserve[...offset]
           routes.push [i, i, b]
         remove(reserve, branch)
-        routes.push([offset, reserve.indexOf(branches[commit.parents[0]]), branch])
+        routes.push([offset, reserve.indexOf(branches[commit.parents[0].sha]), branch])
       else
         # straight
         for b, i in reserve
           routes.push [i, i, b]
-        branches[commit.parents[0]] = branch
+        branches[commit.parents[0].sha] = branch
     else if numParents is 2
       # merge branch
-      branches[commit.parents[0]] = branch
+      branches[commit.parents[0].sha] = branch
       for b, i in reserve
         routes.push [i, i, b]
-      otherBranch = getBranch(commit.parents[1])
+      otherBranch = getBranch(commit.parents[1].sha)
       routes.push([offset, reserve.indexOf(otherBranch), otherBranch])
 
-    node = Node(commit.sha, offset, branch, routes)
+    node = Node(commit.sha, offset, branch, routes, commit.commit)
     nodes.push(node)
 
   nodes
@@ -70,7 +70,7 @@ remove = (list, item) ->
   list.splice(list.indexOf(item), 1)
   list
 
-Node = (sha, offset, branch, routes) ->
-  [sha, [offset, branch], routes]
+Node = (sha, offset, branch, routes, commits) ->
+  [sha, [offset, branch], routes, commits]
 
 module.exports = generateGraphData
