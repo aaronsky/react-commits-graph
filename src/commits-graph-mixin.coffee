@@ -68,6 +68,7 @@ CommitsGraphMixin =
     selected: null
     mirror: false
     unstyled: false
+    orientation: 'vertical'
 
   componentWillReceiveProps: ->
     @graphData = null
@@ -104,14 +105,20 @@ CommitsGraphMixin =
     @getContentWidth()
 
   getContentWidth: ->
-    (@getBranchCount() + 0.5) * @props.x_step
+    if @props.orientation is 'horizontal'
+      (@getGraphData().length + 2) * @props.x_step
+    else  
+      (@getBranchCount() + 0.5) * @props.x_step
 
   getHeight: ->
     return @props.height if @props.height?
     @getContentHeight()
 
   getContentHeight: ->
-    (@getGraphData().length + 2) * @props.y_step
+    if @props.orientation is 'horizontal' 
+      (@getBranchCount() + 0.5) * @props.y_step
+    else 
+      (@getGraphData().length + 2) * @props.y_step
 
   getInvert: ->
     if @props.mirror
@@ -138,26 +145,40 @@ CommitsGraphMixin =
       className: classes
 
   renderRoute: (commit_idx, [from, to, branch]) ->
-    {x_step, y_step} = @props
+    {x_step, y_step, orientation} = @props
     offset = @getOffset()
     invert = @getInvert()
 
     svgPath = new SVGPathData
 
-    from_x = offset + invert + (from + 1) * x_step
-    from_y = (commit_idx + 0.5) * y_step
-    to_x = offset + invert + (to + 1) * x_step
-    to_y = (commit_idx + 0.5 + 1) * y_step
+    if orientation is 'horizontal'
+      from_x = (commit_idx + 0.5) * x_step
+      from_y = offset + invert + (from + 1) * y_step
+      to_x = (commit_idx + 0.5 + 1) * x_step
+      to_y = offset + invert + (to + 1) * y_step
+    else
+      from_x = offset + invert + (from + 1) * x_step
+      from_y = (commit_idx + 0.5) * y_step
+      to_x = offset + invert + (to + 1) * x_step
+      to_y = (commit_idx + 0.5 + 1) * y_step
+    
 
     svgPath.moveTo(from_x, from_y)
-    if from_x is to_x
+    if from_y is to_y or from_x is to_x
       svgPath.lineTo(to_x, to_y)
     else
-      svgPath.bezierCurveTo(
-        from_x - x_step / 4, from_y + y_step / 3 * 2,
-        to_x + x_step / 4, to_y - y_step / 3 * 2,
-        to_x, to_y
-      )
+      if orientation is 'horizontal'
+        svgPath.bezierCurveTo(
+          from_x + x_step / 3 * 2, from_y - y_step / 4,
+          to_x - x_step / 3 * 2, to_y + y_step / 4,
+          to_x, to_y
+        )
+      else
+        svgPath.bezierCurveTo(
+          from_x - x_step / 4, from_y + y_step / 3 * 2,
+          to_x + x_step / 4, to_y - y_step / 3 * 2,
+          to_x, to_y
+        )
 
     @renderRouteNode(svgPath.toString(), branch)
 
@@ -193,12 +214,16 @@ CommitsGraphMixin =
     [dot_offset, dot_branch] = dot
 
     # draw dot
-    {x_step, y_step} = @props
+    {x_step, y_step, orientation} = @props
     offset = @getOffset()
     invert = @getInvert()
 
-    x = offset + invert + (dot_offset + 1) * x_step
-    y = (idx + 0.5) * y_step
+    if orientation is 'horizontal'
+      x = (idx + 0.5) * x_step
+      y = offset + invert + (dot_offset + 1) * y_step
+    else
+      x = offset + invert + (dot_offset + 1) * x_step
+      y = (idx + 0.5) * y_step
 
     commitNode = @renderCommitNode(x, y, sha, dot_branch)
 
