@@ -24,7 +24,7 @@ COLOURS = [
   "#84b6eb",
   "#e6e6e6",
   "#ffffff",
-  "#cc317c",
+  "#cc317c"
 ]
 
 classSet = (classes...) -> classes.filter(Boolean).join(' ')
