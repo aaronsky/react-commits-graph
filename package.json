@@ -33,8 +33,5 @@
   },
   "devDependencies": {
     "coffee-script": "^1.10.0"
-  },
-  "peerDependencies": {
-    "react": "~0.13.3"
   }
 }
