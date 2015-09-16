@@ -3,25 +3,27 @@ React = require('react')
 CommitsGraph = require('../')
 commits = require('./commits.json')
 
-var graphEl = document.querySelector('#graph')
+var selected = null;
 
-var selected = null
-
-function handleClick(sha) {
-  selected = sha
-  render()
+function handleClick(commit) {
+    console.log(commit);
+    selected = commit.sha;
+  render();
 }
 
 function render() {
-  React.renderComponent(CommitsGraph({
-    commits: commits,
-    onClick: handleClick,
-    selected: selected,
-    height: window.innerHeight,
-    width: window.innerWidth,
-  }), graphEl)
+  React.render(
+    <CommitsGraph
+    commits={commits}
+    onClick={handleClick}
+    selected={selected}
+    orientation='horizontal'
+    x_step={40}
+    y_step={40} />,
+    document.getElementById('graph')
+    );
 }
 
-window.addEventListener('resize', render)
+window.addEventListener('resize', render);
 
-render()
+render();

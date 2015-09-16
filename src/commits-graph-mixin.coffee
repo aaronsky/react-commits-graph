@@ -32,7 +32,7 @@ classSet = (classes...) -> classes.filter(Boolean).join(' ')
 getColour = (branch) ->
   n = COLOURS.length
   COLOURS[branch % n]
-  
+
 branchCount = (data) ->
   maxBranch = -1
   i = 0
@@ -107,7 +107,7 @@ CommitsGraphMixin =
   getContentWidth: ->
     if @props.orientation is 'horizontal'
       (@getGraphData().length + 2) * @props.x_step
-    else  
+    else
       (@getBranchCount() + 0.5) * @props.x_step
 
   getHeight: ->
@@ -115,9 +115,9 @@ CommitsGraphMixin =
     @getContentHeight()
 
   getContentHeight: ->
-    if @props.orientation is 'horizontal' 
+    if @props.orientation is 'horizontal'
       (@getBranchCount() + 0.5) * @props.y_step
-    else 
+    else
       (@getGraphData().length + 2) * @props.y_step
 
   getInvert: ->
@@ -129,7 +129,7 @@ CommitsGraphMixin =
   getOffset: ->
     @getWidth() / 2 - @getContentWidth() / 2
 
-  renderRouteNode: (svgPathDataAttribute, branch) ->    
+  renderRouteNode: (svgPathDataAttribute, branch) ->
     unless @props.unstyled
       colour = getColour(branch)
       style =
@@ -161,24 +161,10 @@ CommitsGraphMixin =
       from_y = (commit_idx + 0.5) * y_step
       to_x = offset + invert + (to + 1) * x_step
       to_y = (commit_idx + 0.5 + 1) * y_step
-    
+
 
     svgPath.moveTo(from_x, from_y)
-    if from_y is to_y or from_x is to_x
-      svgPath.lineTo(to_x, to_y)
-    else
-      if orientation is 'horizontal'
-        svgPath.bezierCurveTo(
-          from_x + x_step / 3 * 2, from_y - y_step / 4,
-          to_x - x_step / 3 * 2, to_y + y_step / 4,
-          to_x, to_y
-        )
-      else
-        svgPath.bezierCurveTo(
-          from_x - x_step / 4, from_y + y_step / 3 * 2,
-          to_x + x_step / 4, to_y - y_step / 3 * 2,
-          to_x, to_y
-        )
+    svgPath.lineTo(to_x, to_y)
 
     @renderRouteNode(svgPath.toString(), branch)
 
@@ -201,7 +187,7 @@ CommitsGraphMixin =
     selectedClass = 'selected' if @props.selected
     classes = classSet("commits-graph-branch-#{dot_branch}", selectedClass)
 
-    React.DOM.circle 
+    React.DOM.circle
       cx: x
       cy: y
       r: radius
