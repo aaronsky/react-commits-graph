@@ -1,17 +1,17 @@
 
 React = require('react')
 CommitsGraph = require('../')
-commits = require('./commits.json')
+commits = require('./commits.json');
 
 var selected = null;
 
 function handleClick(commit) {
     console.log(commit);
     selected = commit.sha;
-  render();
+  render(commits);
 }
 
-function render() {
+function render(commits) {
   React.render(
     <CommitsGraph
     commits={commits}
@@ -24,6 +24,4 @@ function render() {
     );
 }
 
-window.addEventListener('resize', render);
-
-render();
+render(commits);
