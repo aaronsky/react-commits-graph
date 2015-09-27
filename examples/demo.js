@@ -8,7 +8,7 @@ var selected = null;
 function handleClick(commit) {
     console.log(commit);
     selected = commit.sha;
-  render(commits);
+    render(commits);
 }
 
 function render(commits) {
