@@ -61,7 +61,7 @@ generateGraphData = (commits) ->
       otherBranch = getBranch(commit.parents[1].sha)
       routes.push([offset, reserve.indexOf(otherBranch), otherBranch])
 
-    node = Node(commit.sha, offset, branch, routes, commit.commit)
+    node = Node(commit.sha, offset, branch, routes, commit)
     nodes.push(node)
 
   nodes
