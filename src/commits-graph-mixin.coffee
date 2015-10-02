@@ -242,7 +242,6 @@ CommitsGraphMixin =
     svgProps = {height, width, style, children}
 
     React.DOM.svg
-      onClick: @handleClick
       height: height
       width: width
       style: style
