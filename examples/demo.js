@@ -12,16 +12,19 @@ function handleClick(commit) {
 }
 
 function render(commits) {
-  React.render(
-    <CommitsGraph
-    commits={commits}
-    onClick={handleClick}
-    selected={selected}
-    orientation='horizontal'
-    x_step={40}
-    y_step={40} />,
-    document.getElementById('graph')
-    );
+    var style = {strokeWidth: 4,strokeColour: '#0ef',fillColour:'#fff'};
+    React.render(
+        <CommitsGraph
+        commits={commits}
+        onClick={handleClick}
+        selected={selected}
+        orientation='horizontal'
+        x_step={40}
+        y_step={40}
+        selectedStyle={style}
+        colours={['#f00']} />,
+        document.getElementById('graph')
+        );
 }
 
 render(commits);

@@ -29,10 +29,6 @@ COLOURS = [
 
 classSet = (classes...) -> classes.filter(Boolean).join(' ')
 
-getColour = (branch) ->
-  n = COLOURS.length
-  COLOURS[branch % n]
-
 branchCount = (data) ->
   maxBranch = -1
   i = 0
@@ -65,14 +61,25 @@ CommitsGraphMixin =
     x_step: 20
     dotRadius: 10
     lineWidth: 5
+    selectedStyle:
+      strokeWidth: 2
+      strokeColour: '#000'
+      fillColour: null
     selected: null
     mirror: false
     unstyled: false
     orientation: 'vertical'
+  
+  getInitialState: ->
+    colours: this.props.colours || COLOURS
 
   componentWillReceiveProps: ->
     @graphData = null
     @branchCount = null
+  
+  getColour: (branch) ->
+    n = this.state.colours.length
+    this.state.colours[branch % n]
 
   cursorPoint: (e) ->
     svg = @getDOMNode()
@@ -131,7 +138,7 @@ CommitsGraphMixin =
 
   renderRouteNode: (svgPathDataAttribute, branch) ->
     unless @props.unstyled
-      colour = getColour(branch)
+      colour = @getColour(branch)
       style =
         'stroke': colour
         'strokeWidth': @props.lineWidth
@@ -172,10 +179,12 @@ CommitsGraphMixin =
     radius = @props.dotRadius
 
     unless @props.unstyled
-      colour = getColour(dot_branch)
+      colour = @getColour(dot_branch)
       if sha is @props.selected
-        strokeColour = '#000'
-        strokeWidth = 2
+        strokeColour = @props.selectedStyle.strokeColour
+        strokeWidth = @props.selectedStyle.strokeWidth
+        if @props.selectedStyle.fillColour
+          colour = @props.selectedStyle.fillColour
       else
         strokeColour = colour
         strokeWidth = 1
