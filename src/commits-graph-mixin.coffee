@@ -61,6 +61,8 @@ CommitsGraphMixin =
     x_step: 20
     dotRadius: 10
     lineWidth: 5
+    offsetPos_x: 0
+    offsetPos_y: 0
     selectedStyle:
       strokeWidth: 2
       strokeColour: '#000'
@@ -98,6 +100,8 @@ CommitsGraphMixin =
       if commitDistance < smallestDistance
         smallestDistance = commitDistance
         closestCommit = commit
+        closestCommit.x += @props.offsetPos_x
+        closestCommit.y += @props.offsetPos_y
 
     @props.onClick?(closestCommit)
 
@@ -246,7 +250,7 @@ CommitsGraphMixin =
     height = @getHeight()
     width = @getWidth()
     unless @props.unstyled
-      style = {height, width, cursor: 'pointer'}
+      style = {height, width, cursor: 'pointer', marginLeft: @props.offsetPos_x, marginTop: @props.offsetPos_y}
 
     svgProps = {height, width, style, children}
 

@@ -22,7 +22,9 @@ function render(commits) {
         x_step={40}
         y_step={40}
         selectedStyle={style}
-        colours={['#f00']} />,
+        offsetPos_x={window.innerWidth / 2}
+        offsetPos_y={10}
+        colours={['#f00','#0f0','#00f','#ff0','#f0f','#0ff','#fff']} />,
         document.getElementById('graph')
         );
 }
