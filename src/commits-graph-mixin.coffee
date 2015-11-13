@@ -225,11 +225,12 @@ CommitsGraphMixin =
       y = (idx + 0.5) * y_step
 
     commitNode = @renderCommitNode(x, y, sha, dot_branch)
+    colour = commitNode.props.style.fill
 
     routeNodes = for route, index in routes_data
       @renderRoute(idx, route)
 
-    @renderedCommitsPositions.push {x, y, sha, commit}
+    @renderedCommitsPositions.push {x, y, sha, commit, colour}
 
     [commitNode, routeNodes]
 
