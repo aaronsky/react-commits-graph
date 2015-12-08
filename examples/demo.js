@@ -1,6 +1,7 @@
 
-React = require('react')
-CommitsGraph = require('../')
+React = require('react');
+ReactDOM = require('react-dom');
+CommitsGraph = require('../');
 commits = require('./commits.json');
 
 var selected = null;
@@ -13,7 +14,7 @@ function handleClick(commit) {
 
 function render(commits) {
     var style = {strokeWidth: 4,strokeColour: '#0ef',fillColour:'#fff'};
-    React.render(
+    ReactDOM.render(
         <CommitsGraph
         commits={commits}
         onClick={handleClick}
